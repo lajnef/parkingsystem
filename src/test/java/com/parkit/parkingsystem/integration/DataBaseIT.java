@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.integration;
 
 import com.parkit.parkingsystem.config.DataBaseConfig;
 import junit.framework.Assert;
@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class DataBaseTest {
+public class DataBaseIT {
     private static Connection connection;
     private static  DataBaseConfig dataBaseConfig;
 

@@ -14,9 +14,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.sql.SQLException;
 import java.util.Date;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class ParkingServiceTest {
@@ -43,7 +46,7 @@ public class ParkingServiceTest {
     }
 
     @Test
-    public void processExitingVehicleTest(){
+    public void processExitingVehicleTest() throws SQLException {
 
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
         Ticket ticket = new Ticket();

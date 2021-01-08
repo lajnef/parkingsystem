@@ -8,10 +8,7 @@ import com.parkit.parkingsystem.model.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class TicketDAO {
 
@@ -19,11 +16,14 @@ public class TicketDAO {
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
-    public boolean saveTicket(Ticket ticket){
+    public boolean saveTicket(Ticket ticket) throws SQLException {
         Connection con = null;
+        PreparedStatement ps = null;
         try {
             con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.SAVE_TICKET);
+            if (con == null) throw new NullPointerException();
+            ps = con.prepareStatement(DBConstants.SAVE_TICKET);
+            if (ps == null) throw new NullPointerException();
             ps.setInt(1,ticket.getParkingSpot().getId());
             ps.setString(2, ticket.getVehicleRegNumber());
             ps.setDouble(3, ticket.getPrice());
@@ -33,6 +33,7 @@ public class TicketDAO {
         }catch (Exception ex){
             logger.error("Error fetching next available slot",ex);
         }finally {
+            dataBaseConfig.closePreparedStatement(ps);
             dataBaseConfig.closeConnection(con);
             return false;
         }
@@ -67,15 +68,18 @@ public class TicketDAO {
         }
     }
 
-    public boolean updateTicket(Ticket ticket) {
+    public boolean updateTicket(Ticket ticket) throws SQLException {
         Connection con = null;
+        PreparedStatement ps = null;
         try {
             con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
+            if (con == null) throw new NullPointerException();
+            ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
             ps.setDouble(1, ticket.getPrice());
             ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
             ps.setInt(3,ticket.getId());
             ps.execute();
+            dataBaseConfig.closePreparedStatement(ps);
             return true;
         }catch (Exception ex){
             logger.error("Error saving ticket info",ex);

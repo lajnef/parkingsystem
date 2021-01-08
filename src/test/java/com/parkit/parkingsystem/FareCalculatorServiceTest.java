@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 public class FareCalculatorServiceTest {
@@ -28,6 +29,29 @@ public class FareCalculatorServiceTest {
     private void setUpPerTest() {
         ticket = new Ticket();
     }
+
+  /*  @Test
+    public void calculateFareThrowNullPointerExceptionWhenOutTimeIsNull()  {
+        assertThrows(NullPointerException.class,
+                () -> fareCalculatorService.calculateFare(ticket));
+    }
+
+    @Test
+    public void calculateFareThrowIllegalArgumentExceptionWhenOutTimeIsBeforeInTime()  {
+        Date inTime = new Date();
+        Date outTime = new Date();
+        outTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class,
+                () -> fareCalculatorService.calculateFare(ticket)
+        );
+
+         assertTrue(thrown.getMessage().contains("Out time provided is incorrect"));
+
+    }*/
 
     @Test
     public void calculateFareCar(){
@@ -152,5 +176,4 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket);
         assertEquals( 1.425 , ticket.getPrice());
     }
-
 }
