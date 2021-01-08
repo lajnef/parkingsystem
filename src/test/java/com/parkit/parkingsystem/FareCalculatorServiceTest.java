@@ -128,8 +128,7 @@ public class FareCalculatorServiceTest {
     @Test
     public void calculateFareCarWithStayLessThanThirtyMinutes(){
         Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  24 * 60 * 60 * 1000) );//24 hours parking time should give 24 * parking fare per hour
-        Date outTime = DateUtils.addMinutes(inTime, 29); //add minute
+        Date outTime = DateUtils.addMinutes(inTime, 30);
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
 
         ticket.setInTime(inTime);
@@ -137,6 +136,21 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
         assertEquals( 0 , ticket.getPrice());
+    }
+
+    @Test
+    public void checkIfDiscountIsApplied(){
+        Date inTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        ticket.setPromoApplied(true);
+        fareCalculatorService.calculateFare(ticket);
+        assertEquals( 1.425 , ticket.getPrice());
     }
 
 }

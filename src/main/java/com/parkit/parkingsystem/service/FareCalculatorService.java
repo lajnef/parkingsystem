@@ -11,7 +11,7 @@ public class FareCalculatorService {
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
         }
 
-        long duration = ParkingUtils.CalculateDurationBetweenDate(ticket.getInTime(), ticket.getOutTime());
+        long duration = ParkingUtils.calculateDurationBetweenDate(ticket.getInTime(), ticket.getOutTime());
 
         if (duration <= Fare.FREE_DURATION_MINUTES) {
             ticket.setPrice(0);
@@ -26,6 +26,11 @@ public class FareCalculatorService {
                     break;
                 }
                 default: throw new IllegalArgumentException("Unkown Parking Type");
+            }
+            if (ticket.isPromoApplied()) {
+                double s = 100 - Fare.DISCOUNT_PERCENT;
+                double price = (s*ticket.getPrice())/100;
+                ticket.setPrice(price);
             }
         }
 

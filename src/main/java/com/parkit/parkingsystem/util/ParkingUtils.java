@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class ParkingUtils {
 
-    public static long CalculateDurationBetweenDate(Date inDate, Date outDate) {
+    public static long calculateDurationBetweenDate(Date inDate, Date outDate) {
         LocalDateTime inDateTime = LocalDateTime.ofInstant(inDate.toInstant(), ZoneId.systemDefault());
         LocalDateTime outDateTime = LocalDateTime.ofInstant(outDate.toInstant(), ZoneId.systemDefault());
 

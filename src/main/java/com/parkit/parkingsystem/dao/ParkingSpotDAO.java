@@ -25,7 +25,7 @@ public class ParkingSpotDAO {
             ps.setString(1, parkingType.toString());
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                result = rs.getInt(1);;
+                result = rs.getInt(1);
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
@@ -54,6 +54,25 @@ public class ParkingSpotDAO {
         }finally {
             dataBaseConfig.closeConnection(con);
         }
+
+    }
+
+        public boolean checkIfIsRecurringUser(String vehicleRegNumber){
+            Connection con = null;
+            try {
+                con = dataBaseConfig.getConnection();
+                PreparedStatement ps = con.prepareStatement(DBConstants.CHECK_VEHICLE_REG_NUMBER);
+                ps.setString(1, vehicleRegNumber);
+                ResultSet rs  = ps.executeQuery();
+                dataBaseConfig.closePreparedStatement(ps);
+                if (rs.next()) return true ;
+                return  false;
+            }catch (Exception ex){
+                logger.error("Error updating parking info",ex);
+                return false;
+            }finally {
+                dataBaseConfig.closeConnection(con);
+            }
     }
 
 }
